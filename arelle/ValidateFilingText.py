@@ -434,7 +434,7 @@ def checkfile(modelXbrl, filepath):
         def end(self, tag): pass
         def data(self, data): pass
         def close(self): pass
-    _parser = XMLParser(target=checkFileType(),huge_tree=False)
+    _parser = XMLParser(target=checkFileType(),huge_tree=True)
     _isTestcase = False
     mayBeInline = isInline = False
     
@@ -915,7 +915,7 @@ def validateGraphicFile(elt, graphicFile):
 
 def referencedFiles(modelXbrl, localFilesOnly=True):
     initModelDocumentTypeReferences()
-    _parser = XMLParser(resolve_entities=False, remove_comments=True, remove_pis=True, recover=True,huge_tree=False)
+    _parser = XMLParser(resolve_entities=False, remove_comments=True, remove_pis=True, recover=True,huge_tree=True)
     referencedFiles = set()
     # add referenced files that are html-referenced image and other files
     def addReferencedFile(docElt, elt):
