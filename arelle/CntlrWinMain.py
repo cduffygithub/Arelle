@@ -730,7 +730,8 @@ class CntlrWinMain (Cntlr.Cntlr):
             if filesource.isArchive and not filesource.selection: # or filesource.isRss:
                 from arelle import DialogOpenArchive
                 filename = DialogOpenArchive.askArchiveFile(self, filesource)
-                
+                if filesource.basefile and not isHttpUrl(filesource.basefile):
+                    self.config["fileOpenDir"] = os.path.dirname(filesource.baseurl)
         if filename:
             if not isinstance(filename, (dict, list)): # json objects
                 if importToDTS:
@@ -1291,8 +1292,8 @@ class CntlrWinMain (Cntlr.Cntlr):
 
     # worker threads addToLog        
     def addToLog(self, message, messageCode="", messageArgs=None, file="", refs=[], level=logging.INFO):
-        if level == logging.DEBUG and not self.showDebugMessages.get():
-            return
+        if level < logging.INFO and not self.showDebugMessages.get():
+            return # skip DEBUG and INFO-RESULT messages
         if messageCode and messageCode not in message: # prepend message code
             message = "[{}] {}".format(messageCode, message)
         if refs:
